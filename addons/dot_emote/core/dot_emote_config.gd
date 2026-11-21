@@ -16,6 +16,12 @@ const ADDON := "dot-emote"
 ## Key that opens the wheel (the game binds it).
 @export var key: String = "G"
 
+@export_group("Playback")
+## Whether an emote in progress ends when the player moves; false lets it play out.
+@export var cancel_on_move: bool = true
+## Seconds an emote with no duration of its own plays; 0 holds it until cancelled.
+@export_range(0.0, 60.0, 0.1) var default_duration: float = 2.0
+
 @export_group("Limits")
 ## Seconds between two emotes by one player; 0 is no cooldown.
 @export_range(0.0, 30.0, 0.1) var emote_cooldown: float = 1.5
@@ -47,6 +53,8 @@ func validate() -> DotResult:
 			return DotResult.fail(DotError.CODE_INVALID, "emote %s %s is negative" % [pair[0], pair[1]])
 	if ping_burst < 0 or markers_per_player < 0:
 		return DotResult.fail(DotError.CODE_INVALID, "emote ping_burst and markers_per_player are 0 (unlimited) or more")
+	if default_duration < 0.0:
+		return DotResult.fail(DotError.CODE_INVALID, "emote default_duration is negative (0 holds until cancelled)")
 	return DotResult.success(self)
 
 

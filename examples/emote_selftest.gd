@@ -3,8 +3,8 @@ extends Node
 ## dot-emote's headless suite (res://examples/emote_selftest.tscn).
 ## Counts sections run to their last line as well as checks, because a script error aborts a section and not the run.
 
-const EXPECTED_SECTIONS := 6
-const EXPECTED_CHECKS := 61
+const EXPECTED_SECTIONS := 7
+const EXPECTED_CHECKS := 74
 
 var _passed := 0
 var _failed := 0
@@ -19,6 +19,7 @@ func _ready() -> void:
 	_gate_use()
 	_gate_ping_markers()
 	_layers()
+	_playback()
 	print("")
 	_check(_sections == EXPECTED_SECTIONS, "every section ran to its last line (%d of %d)" % [_sections, EXPECTED_SECTIONS])
 	_check(_passed + _failed == EXPECTED_CHECKS, "and the suite ran all %d of its checks (%d)" % [EXPECTED_CHECKS, _passed + _failed])
@@ -171,3 +172,41 @@ func _check(ok: bool, what: String, extra: String = "") -> void:
 	else:
 		_failed += 1
 		print("  FAIL  ", what, "  ", extra)
+
+
+func _playback() -> void:
+	var c := DotEmoteConfig.new()
+	var cat := DotEmoteCatalogue.new()
+	cat.add({"id": "wave", "kind": "emote", "duration": 3.0})
+	cat.add({"id": "dance", "kind": "emote"})
+	cat.add({"id": "here", "kind": "ping"})
+	var pb := DotEmotePlayback.new(c, cat)
+	_check(not pb.start(1, &"here", 0.0).ok, "a ping is not a playable emote")
+	_check(pb.start(1, &"wave", 10.0).ok and pb.current(1, 11.0) == &"wave", "a started emote is current")
+	_check(pb.current(1, 13.0) == &"" and pb.size() == 0, "it ends at its own duration and is dropped")
+	pb.start(1, &"dance", 0.0)
+	_check(pb.current(1, 1.9) == &"dance" and pb.current(1, 2.1) == &"", "no duration uses default_duration")
+	c.default_duration = 0.0
+	pb.start(1, &"dance", 0.0)
+	_check(pb.current(1, 1.0e6) == &"dance", "default_duration 0 holds until cancelled")
+	_check(pb.moved(1) and pb.current(1, 1.0) == &"", "moving cancels")
+	c.cancel_on_move = false
+	pb.start(1, &"wave", 0.0)
+	_check(not pb.moved(1) and pb.current(1, 1.0) == &"wave", "cancel_on_move off lets it play out")
+	_check(is_equal_approx(pb.elapsed(1, 1.5), 1.5) and pb.elapsed(2, 1.5) == -1.0, "elapsed seeks, and is -1 when idle")
+	pb.start(2, &"wave", 0.0)
+	pb.start(3, &"wave", 0.0)
+	_check(pb.expire(5.0) == 3 and pb.size() == 0, "expire sweeps every ended emote")
+	pb.start(1, &"wave", 0.0)
+	pb.forget(1)
+	_check(pb.size() == 0, "forget drops a player who left")
+	c.default_duration = -1.0
+	_check(not c.validate().ok, "a negative default_duration is refused")
+	var w := DotEmoteWheel.new(4, 0.25)
+	w.equip(0, &"wave", cat)
+	var v := DotEmoteWheelView.new()
+	v.setup(w)
+	_check(v.point(Vector2(0, -1)) == 0 and v.choose() == &"wave", "the view points at a slot and chooses its id")
+	_check(v.point(Vector2.ZERO) == -1 and v.choose() == &"", "inside the deadzone chooses nothing")
+	v.free()
+	_sections += 1

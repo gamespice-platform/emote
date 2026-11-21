@@ -44,6 +44,8 @@ Every number is a field on `DotEmoteConfig`. The values below are defaults, and 
 | `ping_window` | 6.0 | Seconds the ping burst is counted over. |
 | `markers_per_player` | 4 | Map markers one player may keep at once; 0 is unlimited. |
 | `marker_ttl` | 30.0 | Seconds a marker lives; 0 never expires. |
+| `cancel_on_move` | true | Moving ends the emote in progress. |
+| `default_duration` | 2.0 | Seconds an emote with no duration plays; 0 holds until cancelled. |
 
 ## What it is not
 

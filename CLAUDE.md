@@ -7,7 +7,7 @@ Godot 4.7+ addon for emotes, gestures, sprays, pings and map markers: a catalogu
 | Path | What it holds |
 | --- | --- |
 | `addons/dot_emote/dot_emote_api.gd` | `LEVEL` and `OLDEST`: the API level (1) and the oldest a consumer may target |
-| `addons/dot_emote/core/`, `runtime/` | dot_emote_catalogue.gd, dot_emote_config.gd, dot_emote_gate.gd, dot_emote_wheel.gd (core is pure logic: no nodes, no I/O) |
+| `addons/dot_emote/core/`, `runtime/` | dot_emote_catalogue.gd, dot_emote_playback.gd (who is playing what, no clock), runtime/dot_emote_wheel_view.gd (draws a wheel), dot_emote_config.gd, dot_emote_gate.gd, dot_emote_wheel.gd (core is pure logic: no nodes, no I/O) |
 | `cfg/addon/dot_emote/emote.yml` | shipped defaults, layered under the game, environment and command line |
 | `examples/emote_selftest.gd` | the headless suite; `EXPECTED_SECTIONS` and `EXPECTED_CHECKS` must match what it runs |
 
