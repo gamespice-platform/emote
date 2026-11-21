@@ -1,9 +1,9 @@
 class_name GSEmoteConfig
 extends GSConfig
 
-## Every tunable of GameSpice Emote. A game binds it with GSGameConfigBinder (kind `emote`); `cfg/addon/dot_emote/*.yml`, `DOT_EMOTE_*` and `--emote-*` layer over these defaults. Ranges are inspector slider limits, not caps; set a value from code or a file to go beyond them.
+## Every tunable of GameSpice Emote. A game binds it with GSGameConfigBinder (kind `emote`); `cfg/addon/gs_emote/*.yml`, `GS_EMOTE_*` and `--emote-*` layer over these defaults. Ranges are inspector slider limits, not caps; set a value from code or a file to go beyond them.
 
-const ADDON := "dot-emote"
+const ADDON := "gs-emote"
 
 ## Master switch: off, the gate refuses every use, ping and marker.
 @export var enabled: bool = true
@@ -38,7 +38,7 @@ const ADDON := "dot-emote"
 
 
 func env_prefix() -> String:
-	return "DOT_EMOTE_"
+	return "GS_EMOTE_"
 
 
 func cli_prefix() -> String:
@@ -58,7 +58,7 @@ func validate() -> GSResult:
 	return GSResult.success(self)
 
 
-## Defaults, then `cfg/addon/dot_emote/*.yml` and the game tier, then environment and command line.
+## Defaults, then `cfg/addon/gs_emote/*.yml` and the game tier, then environment and command line.
 static func from_files() -> GSResult:
 	var cfg := GSEmoteConfig.new()
 	var files := GSAddonConfig.load_dir(ADDON)

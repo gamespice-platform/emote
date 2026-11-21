@@ -1,6 +1,6 @@
 extends Node
 
-## dot-emote's headless suite (res://examples/emote_selftest.tscn).
+## gs-emote's headless suite (res://examples/emote_selftest.tscn).
 ## Counts sections run to their last line as well as checks, because a script error aborts a section and not the run.
 
 const EXPECTED_SECTIONS := 7
@@ -12,7 +12,7 @@ var _sections := 0
 
 
 func _ready() -> void:
-	print("dot-emote")
+	print("gs-emote")
 	_config()
 	_catalogue()
 	_wheel()
@@ -51,7 +51,7 @@ func _config() -> void:
 	_check(not c.validate().ok, "a negative burst fails (0 is the unlimited value)")
 	c.ping_burst = 0
 	_check(c.validate().ok, "ping_burst 0 is valid and means unlimited")
-	_check(c.env_prefix() == "DOT_EMOTE_" and c.cli_prefix() == "--emote-", "env and command-line prefixes")
+	_check(c.env_prefix() == "GS_EMOTE_" and c.cli_prefix() == "--emote-", "env and command-line prefixes")
 	_check(c.config_keys().size() >= 10, "every tunable is a config key", str(c.config_keys().size()))
 	_sections += 1
 

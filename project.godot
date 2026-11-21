@@ -10,8 +10,8 @@ config_version=5
 
 [application]
 
-config/name="dot-emote"
-config/description="Emotes, gestures, sprays, pings and map markers: a catalogue, a radial wheel and server-validated use. Depends only on dot-core."
+config/name="gs-emote"
+config/description="Emotes, gestures, sprays, pings and map markers: a catalogue, a radial wheel and server-validated use. Depends only on gs-core."
 run/main_scene="res://examples/emote_selftest.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
@@ -23,7 +23,7 @@ window/size/viewport_height=900
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/dot_emote/plugin.cfg")
+enabled=PackedStringArray("res://addons/gs_emote/plugin.cfg")
 
 [importer_defaults]
 

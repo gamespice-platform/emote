@@ -4,10 +4,10 @@ Godot 4.7+ addon for emotes, gestures, sprays, pings and map markers: a catalogu
 
 ## Install
 
-1. Copy `addons/dot_emote/` and `addons/dot_core/` into your project.
+1. Copy `addons/gs_emote/` and `addons/gs_core/` into your project.
 2. Enable the addon in *Project > Project Settings > Plugins*.
 
-It needs only GameSpice Core ([dot_core](https://github.com/gamespice-platform/core)).
+It needs only GameSpice Core ([gs_core](https://github.com/gamespice-platform/core)).
 
 ## Quick start
 
@@ -30,7 +30,7 @@ gate.place_marker(peer_id, &"enemy_spotted", hit_point, now)   # QUOTA at marker
 
 ## Settings
 
-Every number is a field on `GSEmoteConfig`. The values below are defaults, and the ranges are inspector slider limits, not enforced caps. Set the property from code or a config file (`cfg/addon/dot_emote/emote.yml`, `DOT_EMOTE_*`, `--emote-*`) to go beyond them. A bad value fails loudly in `validate()`.
+Every number is a field on `GSEmoteConfig`. The values below are defaults, and the ranges are inspector slider limits, not enforced caps. Set the property from code or a config file (`cfg/addon/gs_emote/emote.yml`, `GS_EMOTE_*`, `--emote-*`) to go beyond them. A bad value fails loudly in `validate()`.
 
 | Setting | Default | What it does |
 | --- | --- | --- |
