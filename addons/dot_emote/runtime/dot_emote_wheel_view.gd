@@ -1,7 +1,7 @@
-class_name DotEmoteWheelView
+class_name GSEmoteWheelView
 extends Control
 
-## Draws a [DotEmoteWheel] with _draw: a ring of slots, the highlighted one filled, each labelled with its equipped id. No textures; a game swaps the label for an icon by listening to [signal slot_chosen]. Idle (no processing) until [method point] or [method choose] is called.
+## Draws a [GSEmoteWheel] with _draw: a ring of slots, the highlighted one filled, each labelled with its equipped id. No textures; a game swaps the label for an icon by listening to [signal slot_chosen]. Idle (no processing) until [method point] or [method choose] is called.
 
 signal slot_chosen(slot: int, id: StringName)
 
@@ -9,11 +9,11 @@ signal slot_chosen(slot: int, id: StringName)
 @export var ring_colour := Color(1, 1, 1, 0.25)
 @export var hot_colour := Color(1, 0.8, 0.3, 0.7)
 
-var _wheel: DotEmoteWheel
+var _wheel: GSEmoteWheel
 var _hot: int = -1
 
 
-func setup(wheel: DotEmoteWheel) -> void:
+func setup(wheel: GSEmoteWheel) -> void:
 	_wheel = wheel
 	queue_redraw()
 

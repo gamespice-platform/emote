@@ -1,27 +1,27 @@
-class_name DotEmotePlayback
+class_name GSEmotePlayback
 extends RefCounted
 
 ## Which emote each player is playing now, with no clock of its own: times are passed in. An emote ends when its duration passes, when the player moves (if `cancel_on_move`), or when another starts. The gate decides whether a player MAY play; this tracks that they ARE playing, so every client animates the same thing for the same span.
 
-var _cfg: DotEmoteConfig
-var _catalogue: DotEmoteCatalogue
+var _cfg: GSEmoteConfig
+var _catalogue: GSEmoteCatalogue
 var _active: Dictionary = {}
 
 
-func _init(cfg: DotEmoteConfig, catalogue: DotEmoteCatalogue) -> void:
+func _init(cfg: GSEmoteConfig, catalogue: GSEmoteCatalogue) -> void:
 	_cfg = cfg
 	_catalogue = catalogue
 
 
 ## Starts [param id] for [param player], replacing any current one. The catalogue's duration wins over `default_duration`; both 0 means it holds until cancelled. Fails loudly for an id that is not equippable.
-func start(player: Variant, id: StringName, now: float) -> DotResult:
+func start(player: Variant, id: StringName, now: float) -> GSResult:
 	if not _catalogue.is_equippable(id):
-		return DotResult.fail(DotError.CODE_INVALID, "'%s' cannot be played" % id)
+		return GSResult.fail(GSError.CODE_INVALID, "'%s' cannot be played" % id)
 	var d := float(_catalogue.get_def(id).get("duration", 0.0))
 	if d <= 0.0:
 		d = _cfg.default_duration
 	_active[player] = {"id": id, "started": now, "ends": now + d if d > 0.0 else INF}
-	return DotResult.success(id)
+	return GSResult.success(id)
 
 
 ## The id playing for the player at [param now], or empty. An expired emote is dropped here.

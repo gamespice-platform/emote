@@ -1,4 +1,4 @@
-class_name DotEmoteCatalogue
+class_name GSEmoteCatalogue
 extends RefCounted
 
 ## What can be played: emotes, gestures, sprays, pings and map markers, each with an id, a kind and a label. Pure data; art and sound belong to the game and its packs, this only knows ids.
@@ -16,23 +16,23 @@ var _defs: Dictionary = {}
 
 
 ## Adds `{id, kind, label?, duration?, tags?}`. Fails loudly on an empty id, an unknown kind or a repeated id.
-func add(def: Dictionary) -> DotResult:
+func add(def: Dictionary) -> GSResult:
 	var id := StringName(str(def.get("id", "")))
 	if id == &"":
-		return DotResult.fail(DotError.CODE_INVALID, "emote def has no id")
+		return GSResult.fail(GSError.CODE_INVALID, "emote def has no id")
 	var kind := StringName(str(def.get("kind", "")))
 	if not KINDS.has(kind):
-		return DotResult.fail(DotError.CODE_INVALID, "emote '%s' has unknown kind '%s'" % [id, kind])
+		return GSResult.fail(GSError.CODE_INVALID, "emote '%s' has unknown kind '%s'" % [id, kind])
 	if _defs.has(id):
-		return DotResult.fail(DotError.CODE_CONFLICT, "emote id '%s' is already in the catalogue" % id)
+		return GSResult.fail(GSError.CODE_CONFLICT, "emote id '%s' is already in the catalogue" % id)
 	var duration := float(def.get("duration", 0.0))
 	if duration < 0.0:
-		return DotResult.fail(DotError.CODE_INVALID, "emote '%s' has a negative duration" % id)
+		return GSResult.fail(GSError.CODE_INVALID, "emote '%s' has a negative duration" % id)
 	var tags := PackedStringArray()
 	for t: Variant in (def.get("tags", []) as Array):
 		tags.append(str(t))
 	_defs[id] = {"id": id, "kind": kind, "label": str(def.get("label", String(id))), "duration": duration, "tags": tags}
-	return DotResult.success(id)
+	return GSResult.success(id)
 
 
 func has(id: StringName) -> bool:

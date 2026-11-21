@@ -1,4 +1,4 @@
-class_name DotEmoteWheel
+class_name GSEmoteWheel
 extends RefCounted
 
 ## The model of a radial wheel: which slot a stick or mouse offset points at, and what is equipped in each slot. Slot 0 is straight up and slots run clockwise. It draws nothing; a game or GameSpice UI draws the ring from `slot_direction`.
@@ -15,8 +15,8 @@ func _init(p_slots: int = 8, p_deadzone: float = 0.25) -> void:
 	_equipped.fill(&"")
 
 
-static func from_config(config: DotEmoteConfig) -> DotEmoteWheel:
-	return DotEmoteWheel.new(config.wheel_slots, config.wheel_deadzone)
+static func from_config(config: GSEmoteConfig) -> GSEmoteWheel:
+	return GSEmoteWheel.new(config.wheel_slots, config.wheel_deadzone)
 
 
 ## The slot an offset points at (screen coordinates, y down), or -1 inside the deadzone.
@@ -44,15 +44,15 @@ func equipped() -> Array[StringName]:
 	return _equipped.duplicate()
 
 
-func equip(slot: int, id: StringName, catalogue: DotEmoteCatalogue) -> DotResult:
+func equip(slot: int, id: StringName, catalogue: GSEmoteCatalogue) -> GSResult:
 	if slot < 0 or slot >= slots:
-		return DotResult.fail(DotError.CODE_INVALID, "wheel slot %d is outside 0..%d" % [slot, slots - 1])
+		return GSResult.fail(GSError.CODE_INVALID, "wheel slot %d is outside 0..%d" % [slot, slots - 1])
 	if not catalogue.is_equippable(id):
-		return DotResult.fail(DotError.CODE_INVALID, "'%s' is not an equippable emote, gesture or spray" % id)
+		return GSResult.fail(GSError.CODE_INVALID, "'%s' is not an equippable emote, gesture or spray" % id)
 	if _equipped.has(id) and _equipped.find(id) != slot:
-		return DotResult.fail(DotError.CODE_CONFLICT, "'%s' is already in slot %d" % [id, _equipped.find(id)])
+		return GSResult.fail(GSError.CODE_CONFLICT, "'%s' is already in slot %d" % [id, _equipped.find(id)])
 	_equipped[slot] = id
-	return DotResult.success(id)
+	return GSResult.success(id)
 
 
 func clear(slot: int) -> void:
@@ -61,9 +61,9 @@ func clear(slot: int) -> void:
 
 
 ## Replaces the whole wheel from a saved list (empty strings are empty slots). Nothing changes if any entry is bad.
-func load_equipped(ids: Array, catalogue: DotEmoteCatalogue) -> DotResult:
+func load_equipped(ids: Array, catalogue: GSEmoteCatalogue) -> GSResult:
 	if ids.size() > slots:
-		return DotResult.fail(DotError.CODE_INVALID, "%d equipped ids do not fit a %d slot wheel" % [ids.size(), slots])
+		return GSResult.fail(GSError.CODE_INVALID, "%d equipped ids do not fit a %d slot wheel" % [ids.size(), slots])
 	var next: Array[StringName] = []
 	next.resize(slots)
 	next.fill(&"")
@@ -72,9 +72,9 @@ func load_equipped(ids: Array, catalogue: DotEmoteCatalogue) -> DotResult:
 		if id == &"":
 			continue
 		if not catalogue.is_equippable(id):
-			return DotResult.fail(DotError.CODE_INVALID, "saved slot %d holds '%s', which is not equippable here" % [i, id])
+			return GSResult.fail(GSError.CODE_INVALID, "saved slot %d holds '%s', which is not equippable here" % [i, id])
 		if next.has(id):
-			return DotResult.fail(DotError.CODE_CONFLICT, "saved wheel holds '%s' twice" % id)
+			return GSResult.fail(GSError.CODE_CONFLICT, "saved wheel holds '%s' twice" % id)
 		next[i] = id
 	_equipped = next
-	return DotResult.success(self)
+	return GSResult.success(self)

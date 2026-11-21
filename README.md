@@ -12,16 +12,16 @@ It needs only GameSpice Core ([dot_core](https://github.com/gamespice-platform/c
 ## Quick start
 
 ```gdscript
-var cfg := DotEmoteConfig.from_files().value as DotEmoteConfig
-var cat := DotEmoteCatalogue.new()
+var cfg := GSEmoteConfig.from_files().value as GSEmoteConfig
+var cat := GSEmoteCatalogue.new()
 cat.add({"id": "wave", "kind": "emote", "duration": 1.2})
 cat.add({"id": "enemy_spotted", "kind": "ping"})
 
-var wheel := DotEmoteWheel.from_config(cfg)          # slot 0 is up, slots run clockwise
+var wheel := GSEmoteWheel.from_config(cfg)          # slot 0 is up, slots run clockwise
 wheel.equip(0, &"wave", cat)
 var slot := wheel.slot_at(stick_offset)              # -1 inside the deadzone
 
-var gate := DotEmoteGate.new(cfg, cat)               # server side; time is passed in
+var gate := GSEmoteGate.new(cfg, cat)               # server side; time is passed in
 gate.set_equipped(peer_id, wheel.equipped())
 var ok := gate.use(peer_id, &"wave", now)            # FORBIDDEN if not equipped, RATE_LIMITED inside the cooldown
 gate.ping(peer_id, &"enemy_spotted", now)
@@ -30,7 +30,7 @@ gate.place_marker(peer_id, &"enemy_spotted", hit_point, now)   # QUOTA at marker
 
 ## Settings
 
-Every number is a field on `DotEmoteConfig`. The values below are defaults, and the ranges are inspector slider limits, not enforced caps. Set the property from code or a config file (`cfg/addon/dot_emote/emote.yml`, `DOT_EMOTE_*`, `--emote-*`) to go beyond them. A bad value fails loudly in `validate()`.
+Every number is a field on `GSEmoteConfig`. The values below are defaults, and the ranges are inspector slider limits, not enforced caps. Set the property from code or a config file (`cfg/addon/dot_emote/emote.yml`, `DOT_EMOTE_*`, `--emote-*`) to go beyond them. A bad value fails loudly in `validate()`.
 
 | Setting | Default | What it does |
 | --- | --- | --- |

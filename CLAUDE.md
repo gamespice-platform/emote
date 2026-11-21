@@ -21,8 +21,8 @@ Godot 4.7+ addon for emotes, gestures, sprays, pings and map markers: a catalogu
 
 ## Rules
 
-- Every limit is configurable, 0 means unlimited where a limit makes sense, and a bad value fails loudly through `DotResult`.
+- Every limit is configurable, 0 means unlimited where a limit makes sense, and a bad value fails loudly through `GSResult`.
 - Time is passed in (`now`, `delta`); core classes never read a clock.
-- Everything here is prefixed `DotEmote`. No `uid://` paths.
+- Everything here is prefixed `GSEmote`. No `uid://` paths.
 - Prose says GameSpice, never the internal repo prefix.
 - Run the suite with `hv`, never bare Godot. Commit with the owner's identity; never tag.

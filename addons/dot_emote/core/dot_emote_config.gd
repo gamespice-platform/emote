@@ -1,7 +1,7 @@
-class_name DotEmoteConfig
-extends DotConfig
+class_name GSEmoteConfig
+extends GSConfig
 
-## Every tunable of GameSpice Emote. A game binds it with DotGameConfigBinder (kind `emote`); `cfg/addon/dot_emote/*.yml`, `DOT_EMOTE_*` and `--emote-*` layer over these defaults. Ranges are inspector slider limits, not caps; set a value from code or a file to go beyond them.
+## Every tunable of GameSpice Emote. A game binds it with GSGameConfigBinder (kind `emote`); `cfg/addon/dot_emote/*.yml`, `DOT_EMOTE_*` and `--emote-*` layer over these defaults. Ranges are inspector slider limits, not caps; set a value from code or a file to go beyond them.
 
 const ADDON := "dot-emote"
 
@@ -45,23 +45,23 @@ func cli_prefix() -> String:
 	return "--emote-"
 
 
-func validate() -> DotResult:
+func validate() -> GSResult:
 	if wheel_slots < 1:
-		return DotResult.fail(DotError.CODE_INVALID, "emote wheel_slots %d is under 1" % wheel_slots)
+		return GSResult.fail(GSError.CODE_INVALID, "emote wheel_slots %d is under 1" % wheel_slots)
 	for pair: Array in [["emote_cooldown", emote_cooldown], ["ping_cooldown", ping_cooldown], ["ping_window", ping_window], ["marker_ttl", marker_ttl], ["wheel_deadzone", wheel_deadzone]]:
 		if float(pair[1]) < 0.0:
-			return DotResult.fail(DotError.CODE_INVALID, "emote %s %s is negative" % [pair[0], pair[1]])
+			return GSResult.fail(GSError.CODE_INVALID, "emote %s %s is negative" % [pair[0], pair[1]])
 	if ping_burst < 0 or markers_per_player < 0:
-		return DotResult.fail(DotError.CODE_INVALID, "emote ping_burst and markers_per_player are 0 (unlimited) or more")
+		return GSResult.fail(GSError.CODE_INVALID, "emote ping_burst and markers_per_player are 0 (unlimited) or more")
 	if default_duration < 0.0:
-		return DotResult.fail(DotError.CODE_INVALID, "emote default_duration is negative (0 holds until cancelled)")
-	return DotResult.success(self)
+		return GSResult.fail(GSError.CODE_INVALID, "emote default_duration is negative (0 holds until cancelled)")
+	return GSResult.success(self)
 
 
 ## Defaults, then `cfg/addon/dot_emote/*.yml` and the game tier, then environment and command line.
-static func from_files() -> DotResult:
-	var cfg := DotEmoteConfig.new()
-	var files := DotAddonConfig.load_dir(ADDON)
+static func from_files() -> GSResult:
+	var cfg := GSEmoteConfig.new()
+	var files := GSAddonConfig.load_dir(ADDON)
 	if not files.ok:
 		return files
 	cfg.apply_dictionary(files.value as Dictionary, "yml")
