@@ -2,6 +2,8 @@
 
 Godot 4.7+ addon for emotes, gestures, sprays, pings and map markers: a catalogue, a radial wheel model, server-validated equip and cooldowns. Part of the GameSpice addon family.
 
+This GameSpice addon is MIT licensed, built with Claude Code, and has a headless self-test (`res://examples/emote_selftest.tscn`). The games in [Zee's Games](https://zeesgames.com) are built on the GameSpice addons and run on live servers. The assets keep improving through Nightly.
+
 ## Install
 
 1. Copy `addons/gs_emote/` and `addons/gs_core/` into your project.
@@ -63,9 +65,9 @@ godot --headless --path . res://examples/emote_selftest.tscn
 
 The self-test is offline and exits non-zero on any failure.
 
-## Status
+## Used by
 
-Built and maintained with Claude Code. The test suites pass, but little of this has been in front of real players yet. Please report rough edges by opening an issue. The assets keep improving through Nightly.
+No shipped game vendors it yet. The example scene shows it. The whole collection is at [zeesgames.com](https://zeesgames.com).
 
 ## Licence
 
